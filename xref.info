@@ -1,0 +1,6 @@
+name = Crossref
+description = "Provides smoother crossreferencing between content."
+dependencies[] = nodereference
+dependencies[] = prepopulate
+package = Other
+core = "6.x"
