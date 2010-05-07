@@ -9,15 +9,28 @@ function xref_block($op = 'list', $delta = 0) {
     case 'list':
       return array(
         'create' => array('info' => t('Crossref: Create referrer')),
+        'xref' => array('info' => t('Crossref: Referrers')),
       );
     case 'view':
-      if ($delta == 'create' && $node = menu_get_object()) {
-        if ($node->nid) {
-          $xref_links = xref_links($node->type, $node->nid);
-          if (!empty($xref_links)) {
-            return array('subject' => t('Reference this'), 'content' => theme('links', $xref_links));
+      switch ($delta) {
+        case 'create':
+          $node = menu_get_object();
+          if ($node && !empty($node->nid)) {
+            $xref_links = xref_links($node->type, $node->nid);
+            if (!empty($xref_links)) {
+              return array('subject' => t('Reference this'), 'content' => theme('links', $xref_links));
+            }
           }
-        }
+          break;
+        case 'xref':
+          $node = menu_get_object();
+          if ($node && variable_get('xref_view_'. $node->type, true)) {
+            $xref_view = xref_view($node->type, $node->nid);
+            if (!empty($xref_view)) {
+              return array('content' => $xref_view);
+            }
+          }
+          break;
       }
       break;
   }
