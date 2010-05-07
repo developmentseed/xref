@@ -24,7 +24,7 @@ function xref_block($op = 'list', $delta = 0) {
           break;
         case 'xref':
           $node = menu_get_object();
-          if ($node && variable_get('xref_view_'. $node->type, true)) {
+          if ($node) {
             $xref_view = xref_view($node->type, $node->nid);
             if (!empty($xref_view)) {
               return array('content' => $xref_view);
