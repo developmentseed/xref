@@ -178,13 +178,14 @@ function xref_links($nodetype, $nid) {
     $result = db_query("SELECT field_name, type_name FROM {content_node_field_instance} WHERE widget_active = 1 AND field_name IN ($fields)");
     while ($row = db_fetch_object($result)) {
       if (node_access('create', $row->type_name)) {
+        $node = node_load($nid);
         $type = $row->type_name;
         $item = menu_get_item('node/add/'. str_replace('_', '-', $type));
         if ($item['access']) {
           $links[$type] = array(
             'title' => t('via @nodetype', array('@nodetype' => $item['title'])),
             'href' => $item['href'],
-            'query' => "edit[{$row->field_name}][0][nid]={$nid}",
+            'query' => "edit[{$row->field_name}][0][nid][nid]= ". check_plain($node->title) ." [nid: {$nid}]",
           );
         }
       }
