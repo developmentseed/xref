@@ -180,9 +180,11 @@ function xref_links($nodetype, $nid) {
       if (node_access('create', $row->type_name)) {
         $node = node_load($nid);
         $type = $row->type_name;
-	$group = _fieldgroup_field_get_group($row->type_name, $row->field_name);
-	if ($group) {
-	  $groupstring = "[" . $group . "]";
+	if (function_exists('_fieldgroup_field_get_group')) {
+	  $group = _fieldgroup_field_get_group($row->type_name, $row->field_name);
+	  if ($group) {
+	    $groupstring = "[" . $group . "]";
+	  }
 	}
         $item = menu_get_item('node/add/'. str_replace('_', '-', $type));
         if ($item['access']) {
