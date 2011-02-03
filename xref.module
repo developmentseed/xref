@@ -3,7 +3,6 @@
 
 /**
  * Implementation of hook_block().
- * TEST COMMIT
  */
 function xref_block($op = 'list', $delta = 0) {
   switch ($op) {
