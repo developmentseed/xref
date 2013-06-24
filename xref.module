@@ -180,12 +180,18 @@ function xref_links($nodetype, $nid) {
       if (node_access('create', $row->type_name)) {
         $node = node_load($nid);
         $type = $row->type_name;
+	if (function_exists('_fieldgroup_field_get_group')) {
+	  $group = _fieldgroup_field_get_group($row->type_name, $row->field_name);
+	  if ($group) {
+	    $groupstring = "[" . $group . "]";
+	  }
+	}
         $item = menu_get_item('node/add/'. str_replace('_', '-', $type));
         if ($item['access']) {
           $links[$type] = array(
             'title' => t('via @nodetype', array('@nodetype' => $item['title'])),
             'href' => $item['href'],
-            'query' => "edit[{$row->field_name}][0][nid][nid]= ". check_plain($node->title) ." [nid: {$nid}]",
+            'query' => "edit" . $groupstring . "[{$row->field_name}][0][nid][nid]= ". check_plain($node->title) ." [nid: {$nid}]",
           );
         }
       }
